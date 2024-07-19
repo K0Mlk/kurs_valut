@@ -2,9 +2,9 @@ import os
 import asyncio
 import logging
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.filters.command import Command
-from aiogram.enums import ParseMode
+from handlers import cmd_start, cmd_exchange, cmd_rates
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -15,12 +15,9 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer(
-        f"Zdarova! <b>{message.from_user.full_name}</b>",
-        parse_mode=ParseMode.HTML
-        )
+dp.message.register(cmd_start, Command("start"))
+dp.message.register(cmd_exchange, Command("exchange"))
+dp.message.register(cmd_rates, Command("rates"))
 
 
 async def main():

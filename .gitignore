@@ -1,2 +1,5 @@
 /venv
 .env
+bot/__pycache__/handlers.cpython-310.pyc
+services/__pycache__/__init__.cpython-310.pyc
+services/__pycache__/exchange_rates.cpython-310.pyc
