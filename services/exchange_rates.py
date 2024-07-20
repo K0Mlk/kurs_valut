@@ -18,10 +18,12 @@ class ExchangeRates:
 
     def __init__(self):
         try:
-            self.redis_client = redis.Redis(
+            self.redis_client = redis.StrictRedis(
             host=REDIS_HOST,
             port=REDIS_PORT,
-            db=REDIS_DB
+            db=REDIS_DB,
+            charset="utf-8",
+            decode_responses=True
             )
             self.redis_client.ping()
             logging.info("Есть контакт!")
@@ -33,7 +35,6 @@ class ExchangeRates:
             try:
                 async with session.get(PRICES_CB) as response:
                     data = await response.text()
-                    await print(data)
                     self.update_rates(data)
                     
             except Exception as e:
