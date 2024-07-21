@@ -2,15 +2,13 @@ from aiogram import types
 from aiogram.enums import ParseMode
 from services.exchange_rates import ExchangeRates
 
-exchange_rates = ExchangeRates()
+exchange_service = ExchangeRates()
 
 async def cmd_start(message: types.Message):
     
     await message.answer(
-        f"""Приветствую тебя, <b>{message.from_user.full_name}</b>
-        \n\nЭтот бот отрабатывает по командам:
-        \nПоказывает актуальный курс - /rates
-        Определяет стоимость валюты - /exchange 
+        f"""Приветствую тебя, <b>{message.from_user.full_name}</b>Этот бот отрабатывает по командам:
+        \n/rates - Показывает актуальный курс\n/exchange - Определяет стоимость валюты 
         \nФормат использования /exchange:
         \n/exchange USD RUB 10
         \nДанная команда отображает стоимость 10 долларов в рублях""",
@@ -32,8 +30,8 @@ async def cmd_exchange(message: types.Message):
         await message.answer("Количество должно быть числом")
         return
     
-    from_rate = exchange_rates.get_rate(from_currency)
-    to_rate = exchange_rates.get_rate(to_currency)
+    from_rate = exchange_service.get_rate(from_currency)
+    to_rate = exchange_service.get_rate(to_currency)
 
     if from_rate is None or to_rate is None:
         await message.answer('Неверный код валюты!')
@@ -43,10 +41,10 @@ async def cmd_exchange(message: types.Message):
     await message.answer(f"{amount} {from_currency} = {result:.2f} {to_currency}")
 
 async def cmd_rates(message: types.Message):
-    currencies = ["USD", "EUR", "RUB"]
+    currencies = exchange_service.get_available_currencies()
     rates = {}
     for currency in currencies:
-        rate = exchange_rates.get_rate(currency)
+        rate = exchange_service.get_rate(currency)
         if rate is None:
             await message.answer(f"Не удалось получить курс для {currency}")
             return
