@@ -17,7 +17,7 @@ REDIS_DB=бд_редиски
 
 PRICES_CB=ссылка_данные_с_курсами_валют
 
-3.Запускаем docker-compose
+3. Запускаем docker-compose
 
 docker-compose up --build
 
